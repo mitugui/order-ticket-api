@@ -1,6 +1,9 @@
 const express = require("express")
+const orderRoute = require("./routes/order")
 
 const app = express()
+
+app.use('/orders', orderRoute)
 
 const port = 8000
 
