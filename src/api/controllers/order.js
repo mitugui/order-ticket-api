@@ -1,8 +1,8 @@
-const { getAllOrders, deleteOrderByID } = require("../services/order")
+const { getAllOrdersWithDetails, deleteOrderByID } = require("../services/order")
 
 function getOrders(req, res) {
     try {
-        const orders = getAllOrders()
+        const orders = getAllOrdersWithDetails()
         res.send(orders)
     } catch (error) {
         res.status(500)
