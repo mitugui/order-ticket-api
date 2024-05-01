@@ -1,8 +1,11 @@
 const fs = require("fs")
+const path = require("path")
 const ClientService = require("./client")
 const ProductService = require("./product")
 
-const orders = JSON.parse(fs.readFileSync("orders.json"))
+const ordersPath = path.join(__dirname, "..", "..", "..", "data", "orders.json")
+
+const orders = JSON.parse(fs.readFileSync(ordersPath, "utf-8"))
 
 function getAllOrdersWithDetails() {
     const ordersWithDetails = orders.map(order => {
