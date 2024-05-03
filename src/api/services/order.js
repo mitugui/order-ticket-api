@@ -30,7 +30,7 @@ function getAllOrdersWithDetails() {
 
 function deleteOrderByID(id) {
     const filteredOrders = orders.filter(order => order.id !== id)
-    fs.writeFileSync("orders.json", JSON.stringify(filteredOrders))
+    fs.writeFileSync(ordersPath, JSON.stringify(filteredOrders))
 }
 
 module.exports = {
