@@ -1,5 +1,5 @@
 const { Router } = require("express")
-const { getOrders, deleteOrder } = require("../api/controllers/order")
+const { getOrders, deleteOrder } = require("../controllers/order")
 
 const router = Router()
 
