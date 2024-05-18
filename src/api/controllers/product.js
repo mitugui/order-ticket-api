@@ -1,13 +1,13 @@
-const { insertProduct } = require("../services/product")
+const { getProductById, insertProduct } = require("../services/product")
 
-function postProduct(req, res) {
+async function getProduct(req, res) {
     try {
-        const data = req.body
-
-        if (req.body.name) {
-            insertProduct(data)
-            res.status(201)
-            res.send("Produto inserido com sucesso!")
+        const id = req.params.id
+        const productFound = await getProductById(id)
+        if (!productFound) {
+            res.status(404).send("Produto não encontrado.");
+        } else {
+            res.status(200).json(productFound);
         }
     } catch (error) {
         res.status(500)
@@ -15,4 +15,16 @@ function postProduct(req, res) {
     }
 }
 
-module.exports = { postProduct }
+async function postProduct(req, res) {
+    try {
+        const data = req.body
+        const newProduct = await insertProduct(data)
+
+        res.status(201).json({ message: "Produto inserido com sucesso!", newProduct })
+    } catch (error) {
+        res.status(500)
+        res.send(error.message)
+    }
+}
+
+module.exports = { getProduct, postProduct }

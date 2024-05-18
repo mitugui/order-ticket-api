@@ -1,19 +1,14 @@
-const fs = require("fs")
-const path = require("path")
+const { Product } = require("../../models/Product.js")
 
-const productsPath = path.join(__dirname, "..", "..", "..", "data", "products.json")
-const products = JSON.parse(fs.readFileSync(productsPath, "utf-8"))
-
-function getProductById(id) {
-    return products.find(product => product.id === id)
+async function getProductById(id) {
+    return await Product.findById(id)
 }
 
-function insertProduct(newProduct) {
-    const newProductsList = [...products, newProduct]
-    fs.writeFileSync(productsPath, JSON.stringify(newProductsList))
+async function insertProduct(productData) {
+    return await Product.create(productData)
 }
 
-module.exports =  {
+module.exports = {
     getProductById,
     insertProduct
 }
