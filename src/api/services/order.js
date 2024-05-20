@@ -1,39 +1,27 @@
-const fs = require("fs")
-const path = require("path")
-const ClientService = require("./client")
-const ProductService = require("./product")
+const Order = require("../../models/Order.js")
+const { Product } = require("../../models/Product.js")
 
-const ordersPath = path.join(__dirname, "..", "..", "..", "data", "orders.json")
-
-const orders = JSON.parse(fs.readFileSync(ordersPath, "utf-8"))
-
-function getAllOrdersWithDetails() {
-    const ordersWithDetails = orders.map(order => {
-        const client = ClientService.getClientById(order.clientId)
-        const itemsWithProductDetails = order.items.map(item => {
-            const product = ProductService.getProductById(item.productId)
-            return {
-                name: product.name,
-                quantity: item.quantity
-            }
-        })
-        
-        return {
-            id: client.id,
-            name: client.name,
-            items: itemsWithProductDetails
-        }
-    })
-
-    return ordersWithDetails
+async function getAllOrders() {
+    return await Order.find({})
 }
 
-function deleteOrderByID(id) {
-    const filteredOrders = orders.filter(order => order.id !== id)
-    fs.writeFileSync(ordersPath, JSON.stringify(filteredOrders))
+async function insertOrder(newOrder) {
+    const foundProducts = await Product.find({ _id: { $in: newOrder.items } })
+    
+    const completeOrder = new Order({
+        clientName: newOrder.clientName,
+        items: foundProducts
+    })
+
+    return await completeOrder.save()
+}
+
+async function deleteOrderByID(id) {
+    await Order.findByIdAndDelete(id)
 }
 
 module.exports = {
-    getAllOrdersWithDetails,
+    getAllOrders,
+    insertOrder,
     deleteOrderByID
 }
