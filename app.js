@@ -25,10 +25,10 @@ async function startServer() {
     app.use('/orders', orderRoute)
     app.use('/products', productRoute)
 
-    const port = 8000
+    const PORT = 8000
 
-    app.listen(port, () => {
-        console.log(`Executando a porta ${port}`)
+    app.listen(PORT, () => {
+        console.log(`Executando a porta ${PORT}`)
     })
 }
 
